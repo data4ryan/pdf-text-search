@@ -16,10 +16,13 @@ class TextConverterToString(TextConverter):
             self.outfp.write(text.encode(self.codec, 'ignore'))
         return
 
+# pdf2txt function was converted from PDFMiner's pdf2txt.py function to return
+# string (instead of sending output to a file or stdout)
 def pdf2txt(pdffilename):
     pagenos = set()
     outfp = ''
     caching = False
+    rotation = 0
     rsrcmgr = PDFResourceManager(caching=caching)
 
     device = TextConverterToString(rsrcmgr, outfp, codec='utf-8', laparams=LAParams(),

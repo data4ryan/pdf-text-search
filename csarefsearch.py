@@ -10,7 +10,7 @@ def searchyear(year):
     pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #get all the publication files
 
     for file in pubfiles:
-        print '*** Converting PDF to text...'
+        print '*** Converting PDF to text: '+ file +'...'
         pdftext = pdf2txt(file)
         print '*** Searching file: '+file
         files_with_reference = []
