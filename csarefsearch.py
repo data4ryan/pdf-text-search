@@ -9,7 +9,8 @@ def searchyear(year):
     pubfolder = '/tankhome/rchughes/acebox2/publications/'
     pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #get all the publication files
 
-    for file in pubfiles:
+    for i,file in enumerate(pubfiles):
+        if i>5: continue #for testing
         print '*** Converting PDF to text: '+ file +'...'
         pdftext = pdf2txt(file)
         print '*** Searching file: '+file
@@ -19,7 +20,7 @@ def searchyear(year):
             m = re.search(r'('+myregex+r')',pdftext)
             if m is not None:
                 files_with_reference.append(file)
-            print 'File '+file+' contains term \''+searchterm+'\'.'
+                print 'File '+file+' contains term \''+searchterm+'\'.'
 
 if __name__ == "__main__":
     searchyear(2015)
