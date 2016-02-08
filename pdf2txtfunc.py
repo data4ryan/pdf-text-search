@@ -22,7 +22,7 @@ def pdf2txt(pdffilename):
     caching = False
     rsrcmgr = PDFResourceManager(caching=caching)
 
-    device = TextConverter(rsrcmgr, outfp, codec='utf-8', laparams=LAParams(),
+    device = TextConverterToString(rsrcmgr, outfp, codec='utf-8', laparams=LAParams(),
                                imagewriter=None)
 
     fp = file(pdffilename, 'rb')

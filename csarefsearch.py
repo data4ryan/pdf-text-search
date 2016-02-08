@@ -3,23 +3,23 @@ to the CSA'''
 
 import glob
 import re
+from pdf2txtfunc import pdf2txt
 
 def searchyear(year):
     pubfolder = '/tankhome/rchughes/acebox2/publications/'
     pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #get all the publication files
 
-
     for file in pubfiles:
+        print '*** Converting PDF to text...'
+        pdftext = pdf2txt(file)
         print '*** Searching file: '+file
-        all_canSpcAgn = []
+        files_with_reference = []
         for searchterm in ['Canadian Space Agency','CSA','anadian']:
             myregex = re.escape(searchterm)
-            for linenum,line in enumerate(open(file,'r')):
-                m = re.search(r'('+myregex+r')',line)
-                if m is not None:
-                    #print 'Line #: ', linenum
-                    all_canSpcAgn.append(linenum)
-            print 'Found '+str(len(all_canSpcAgn))+' references of \''+searchterm+'\'.'
+            m = re.search(r'('+myregex+r')',pdftext)
+            if m is not None:
+                files_with_reference.append(file)
+            print 'File '+file+' contains term \''+searchterm+'\'.'
 
 if __name__ == "__main__":
     searchyear(2015)
