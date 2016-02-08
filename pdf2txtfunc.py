@@ -28,8 +28,8 @@ def pdf2txt(pdffilename):
     fp = file(pdffilename, 'rb')
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     for page in PDFPage.get_pages(fp, pagenos,
-                                  maxpages=0, password=password,
-                                  caching=caching, check_extractable=True):
+                                  maxpages=0, password='', caching=caching,
+                                  check_extractable=True):
         page.rotate = (page.rotate+rotation) % 360
         interpreter.process_page(page)
     fp.close()
