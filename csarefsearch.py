@@ -9,8 +9,7 @@ def searchyear(year):
     pubfolder = '/tankhome/rchughes/acebox2/publications/'
     pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #get all the publication files
 
-    for i,file in enumerate(pubfiles):
-        if i>5: continue #for testing
+    for file in pubfiles:
         print '*** Converting PDF to text: '+ file +'...'
         pdftext = pdf2txt(file)
         print '*** Searching file: '+file
