@@ -7,11 +7,13 @@ from pdf2txtfunc import pdf2txt
 
 def searchyear(year):
     pubfolder = '/tankhome/rchughes/acebox2/publications/'
-    pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #get all the publication files
+    pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #get all the publications
 
-    for file in pubfiles:
+    for i,file in enumerate(pubfiles):
+        if i>1: continue #for testing
         print '*** Converting PDF to text: '+ file +'...'
         pdftext = pdf2txt(file)
+        print pdftext
         print '*** Searching file: '+file
         files_with_reference = []
         for searchterm in ['Canadian Space Agency','CSA','anadian']:
