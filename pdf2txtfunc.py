@@ -25,8 +25,8 @@ def pdf2txt(pdffilename):
     rotation = 0
     rsrcmgr = PDFResourceManager(caching=caching)
 
-    device = TextConverterToString(rsrcmgr, outfp, codec='utf-8', laparams=LAParams(),
-                               imagewriter=None)
+    device = TextConverterToString(rsrcmgr, outfp, codec='utf-8',
+                               laparams=LAParams(), imagewriter=None)
 
     fp = file(pdffilename, 'rb')
     interpreter = PDFPageInterpreter(rsrcmgr, device)
