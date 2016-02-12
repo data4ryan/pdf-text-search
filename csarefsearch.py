@@ -6,22 +6,22 @@ import re
 from pdf2txtfunc import pdf2txt
 
 def searchyear(year):
-    pubfolder = '/tankhome/rchughes/acebox2/publications/'
-    pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #get all the publications
+    #pubfolder = '/tankhome/rchughes/acebox2/publications/'
+    pubfolder = './'
+    pubfiles = glob.glob(pubfolder+str(year)+'/*.pdf') #find all publications
 
-    for i,file in enumerate(pubfiles):
-        if i>1: continue #for testing
-        print '*** Converting PDF to text: '+ file +'...'
+    for file in pubfiles:
+        folderfile = file.split('/')[-2]+'/'+file.split('/')[-1]
+        print '*** Converting PDF to text: '+folderfile+'...'
         pdftext = pdf2txt(file)
-        print pdftext
-        print '*** Searching file: '+file
+        print '*** Searching file: '+folderfile+'...'
         files_with_reference = []
-        for searchterm in ['Canadian Space Agency','CSA','anadian']:
+        for searchterm in ['Space', 'Agency','CSA','anadian']:
             myregex = re.escape(searchterm)
             m = re.search(r'('+myregex+r')',pdftext)
             if m is not None:
                 files_with_reference.append(file)
-                print 'File '+file+' contains term \''+searchterm+'\'.'
+                print 'File '+folderfile+' contains term \''+searchterm+'\'.'
 
 if __name__ == "__main__":
     searchyear(2015)

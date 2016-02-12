@@ -7,11 +7,18 @@ from pdfminer.converter import XMLConverter, HTMLConverter, TextConverter
 from pdfminer.cmapdb import CMapDB
 from pdfminer.layout import LAParams
 from pdfminer.image import ImageWriter
+from unicodedata import normalize
 
 class TextConverterToString(TextConverter):
     def write_text(self, text):
-        if isinstance(self.outfp,basestring):
-            self.outfp += text
+        if isinstance(self.outfp,str):
+            if isinstance(text,str):
+                self.outfp += text
+            elif isinstance(text,unicode):
+                #self.outfp += text.encode(self.codec,'ignore')
+                self.outfp += normalize('NFKD',text).encode('ascii','ignore')
+            else:
+                print 'Funny character found...'
         else:
             self.outfp.write(text.encode(self.codec, 'ignore'))
         return
@@ -32,10 +39,10 @@ def pdf2txt(pdffilename):
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     for page in PDFPage.get_pages(fp, pagenos,
                                   maxpages=0, password='', caching=caching,
-                                  check_extractable=True):
+                                  check_extractable=False):
         page.rotate = (page.rotate+rotation) % 360
         interpreter.process_page(page)
     fp.close()
     device.close()
 
-    return outfp
+    return device.outfp
