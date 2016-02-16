@@ -8,7 +8,9 @@ from pdfminer.cmapdb import CMapDB
 from pdfminer.layout import LAParams
 from pdfminer.image import ImageWriter
 from unicodedata import normalize
+import re
 
+#TextConverterToString has custom write_text function to allow writing to string
 class TextConverterToString(TextConverter):
     def write_text(self, text):
         if isinstance(self.outfp,str):
@@ -46,3 +48,24 @@ def pdf2txt(pdffilename):
     device.close()
 
     return device.outfp
+
+#searches a pdf for a term (or list of terms) and returns a dictionary with the
+#appropriate boolean value if it contains the term(s)
+def searchpdf(pdffilename,searchterms):
+    has_terms = {}
+
+    if !isinstance(type(searchterms),list):
+        terms = [searchterms]
+    else:
+        terms = searchterms
+
+    [has_terms[term]=False for term in terms]
+
+    pdftext = pdf2txt(pdffilename) #converting pdf to text
+    for term in terms:
+        myregex = re.escape(term)
+        m = re.search(r'('+myregex+r')',pdftext)
+        if m is not None:
+            has_terms[term] = True
+
+    return has_terms
