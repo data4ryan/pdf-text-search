@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from acepy.getquarterlystats import pubrecord
 from datetime import datetime as dt
+from docx import Document
 
 webdataEngine = create_engine('postgresql://rchughes:h2olo2h2o@localhost:5432/web_data')
 webdataBase = declarative_base(webdataEngine)
@@ -35,7 +36,30 @@ for pub in pubs2015:
     else:
         otherpubs.append(pub)
 
+#outputting publications to a word document
+document = Document()
+document.add_heading('Performance Indicators for '+str(startdate.year),0)
 
+document.add_heading('PEER Reviewed Publications',1)
+document.add_heading('Acknowledges Canadian Space Agency',2)
+for pub in pubsWithCSAref:
+    p = document.add_paragraph(pub.lead_author_surname+', '+\
+        pub.lead_author_given_names+', '+\
+        pub.coauthors+'. ', style='ListNumber')
+    p.add_run(pub.title).underline=True
+    p.add_run('.')
+    p.add_run(pub.journal+' ').italic=True
+    p.add_run(pub.vol).bold=True
+    p.add_run(', '+pub.pages+'.')
+
+document.add_heading('Acknowledges Canadian Space Agency',2)
+p = document.add_paragraph('sample item', style='ListNumber')
+
+
+document.add_heading('Presentations',1)
+document.add_paragraph('sample item', style='ListNumber')
+
+document.save('PerformanceIndicatorPublications_'+str(startdate.year)+'.docx')
 
 '''import glob
 import re
