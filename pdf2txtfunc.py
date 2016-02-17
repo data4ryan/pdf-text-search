@@ -25,9 +25,9 @@ class TextConverterToString(TextConverter):
             self.outfp.write(text.encode(self.codec, 'ignore'))
         return
 
-# pdf2txt function was converted from PDFMiner's pdf2txt.py function to return
+# pdf2str function was converted from PDFMiner's pdf2txt.py function to return
 # string (instead of sending output to a file or stdout)
-def pdf2txt(pdffilename):
+def pdf2str(pdffilename):
     pagenos = set()
     outfp = ''
     caching = False
@@ -50,7 +50,7 @@ def pdf2txt(pdffilename):
     return device.outfp
 
 #searches a pdf for a term (or list of terms) and returns a dictionary with the
-#appropriate boolean value if it contains the term(s)
+#appropriate boolean value if it contains the term
 def searchpdf(pdffilename,searchterms):
     has_terms = {}
 
@@ -61,11 +61,10 @@ def searchpdf(pdffilename,searchterms):
 
     [has_terms[term]=False for term in terms]
 
-    pdftext = pdf2txt(pdffilename) #converting pdf to text
+    pdftext = pdf2str(pdffilename) #converting pdf to text
     for term in terms:
         myregex = re.escape(term)
         m = re.search(r'('+myregex+r')',pdftext)
-        if m is not None:
-            has_terms[term] = True
+        if m is not None: has_terms[term] = True
 
     return has_terms

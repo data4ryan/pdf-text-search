@@ -11,6 +11,6 @@ This searches a PDF for a any string.
 > searchyear(2015)
 
 #### To return text of PDF
-> from pdf2txtfunc import pdf2txt
+> from pdf2txtfunc import pdf2str
 >
-> pdftext = pdf2txt('sample.pdf')
+> pdftext = pdf2str('sample.pdf')

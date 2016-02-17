@@ -6,3 +6,6 @@
 resources
 searchenv
 perfenv
+
+#other files
+#searchOutput*.txt

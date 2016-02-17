@@ -1,7 +1,43 @@
 '''this file searches the journal publications PDF files for the acknowledgement
 to the CSA'''
+##################
+from sqlalchemy import create_engine, asc
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from acepy.getquarterlystats import pubrecord
+from datetime import datetime as dt
 
-import glob
+webdataEngine = create_engine('postgresql://rchughes:h2olo2h2o@localhost:5432/web_data')
+webdataBase = declarative_base(webdataEngine)
+startdate = dt(2015,1,1,0,0,0)
+enddate = dt(2015,12,31,23,59,59)
+
+metadata = webdataBase.metadata
+webdataSession = sessionmaker(bind=webdataEngine)
+mywebdatasession = webdataSession()
+
+pubs2015 = mywebdatasession.query(pubrecord).\
+    filter(pubrecord.pub_date>startdate).\
+    filter(pubrecord.pub_date<enddate).\
+    order_by(asc(pubrecord.lead_author_surname))
+manualPubsWithCSAref = []
+
+with open('searchOutput_2016-02-12.txt','r') as f:
+    for line in f:
+        manualPubsWithCSAref.append(line.strip())
+
+pubsWithCSAref = []
+otherpubs = []
+
+for pub in pubs2015:
+    if pub.filename == manualPubsWithCSAref:
+        pubsWithCSAref.append(pub)
+    else:
+        otherpubs.append(pub)
+
+
+
+'''import glob
 import re
 from pdf2txtfunc import searchpdf
 
@@ -30,4 +66,4 @@ def searchyear(year):
     return termsfound
 
 if __name__ == "__main__":
-    searchyear(2015)
+    searchyear(2015)'''
