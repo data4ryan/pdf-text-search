@@ -4,8 +4,10 @@
 #folders
 20[01][1-9]
 resources
-searchenv
-perfenv
+*env
+acepy.egg-info
 
 #other files
 #searchOutput*.txt
+*.doc
+*.docx
