@@ -11,6 +11,8 @@ Get all text from PDF
 
 
 Searched PDF for certain words/string
+> from pdf2txtfunc import searchpdf
+>
 > foundterms = searchpdf('sample.pdf',['foo','bar'])
 >
 > print foundterms
