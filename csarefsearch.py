@@ -8,15 +8,26 @@ from acepy.getquarterlystats import pubrecord
 from datetime import datetime as dt
 from docx import Document
 
-'''htmlreplacements = {'&eacute;':'',
-                    '&Eacute;':'',
-                    '&ouml;':'',
-                    '&Ouml;':''}
+html_escape_table = {'&Aacute;':'a','&aacute;':'a','&Agrave;':'a','&agrave;':'a','&Auml;':'a','&auml;':'a',
+                     '&eacute;':'e','&Eacute;':'e','&Egrave;':'e','&egrave;':'e','&Euml;':'e','&euml;':'e',
+                     '&Iacute;':'i','&iacute;':'i','&Igrave;':'i','&igrave;':'i','&Iuml;':'i','&iuml;':'i',
+                     '&Oacute;':'o','&oacute;':'o','&Ograve;':'o','&ograve;':'o','&Ouml;':'o','&ouml;':'o',
+                     '&Uacute;':'u','&uacute;':'u','&Ugrave;':'u','&ugrave;':'u','&uuml;':'u','&uuml;':'u',
+                     '&szlig;':'ss'
+                     }
+html_tags_table = {'<sub>':'','</sub>':'','<sup>':'','</sup>':''}
 
 def removehtml(pub):
     for attribute in ['lead_author_surname','lead_author_given_names','title','coauthors']:
-        attstr = pub.__dict__[attribute]
-'''
+        for key,value in html_escape_table.iteritems():
+            attstr = pub.__dict__[attribute].replace(key,value)
+            pub.__dict__[attribute] = attstr
+        for key,value in html_tags_table.iteritems():
+            attstr = pub.__dict__[attribute].replace(key,value)
+            pub.__dict__[attribute] = attstr
+
+    return pub
+
 
 #port = '5432' #for production
 port = '5433' #for testing
@@ -55,8 +66,8 @@ document.add_heading('Performance Indicators for '+str(startdate.year),0)
 document.add_heading('PEER Reviewed Publications',1)
 document.add_heading('Acknowledges Canadian Space Agency',2)
 if len(pubsWithCSAref)>0:
-    for i,pub in enumerate(pubsWithCSAref):
-        if i==0: pub.lead_author_surname = 'Flinstone'
+    for pub in pubsWithCSAref:
+        pub = removehtml(pub)
         p = document.add_paragraph(pub.lead_author_surname+', '+\
             pub.lead_author_given_names+', '+\
             pub.coauthors+'. ', style='List')
@@ -71,6 +82,7 @@ else:
 document.add_heading('No Canadian Space Agency Acknowledgement',2)
 if len(otherpubs)>0:
     for pub in otherpubs:
+        pub = removehtml(pub)
         p = document.add_paragraph(pub.lead_author_surname+', '+\
             pub.lead_author_given_names+', '+\
             pub.coauthors+'. ', style='List')
