@@ -18,3 +18,6 @@ Searched PDF for certain words/string
 > print foundterms
 >
 > {'foo': True, 'bar': False}
+
+### Note
+This will not work on the ACE server because python-docx cannot be installed
