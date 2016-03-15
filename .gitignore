@@ -1,13 +1,2 @@
-#compiled files
 *.pyc
 
-#folders
-20[01][1-9]
-resources
-*env
-acepy.egg-info
-
-#other files
-#searchOutput*.txt
-*.doc
-*.docx
